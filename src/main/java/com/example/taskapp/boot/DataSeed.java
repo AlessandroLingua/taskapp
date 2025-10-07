@@ -18,7 +18,7 @@ class DataSeed implements CommandLineRunner {
     public void run(String... args) {
         if (repo.count() == 0) {
             Task t1 = new Task();
-            t1.setTitle("Imparare Spring Boot");
+            t1.setTitle("Spring Boot");
             t1.setDescription("API + JPA");
 
             Task t2 = new Task();
