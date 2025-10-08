@@ -17,7 +17,10 @@
             $http.post('/api/tasks', $scope.form).then(function(res){
                 $scope.tasks.push(res.data);
                 $scope.form = {}; $scope.ok = 'Creato!'; $scope.err = null;
-            }, function() { $scope.err = 'Errore creazione'; $scope.ok = null; });
+            }, function(res) {
+                $scope.err = (res.data && (res.data.message || JSON.stringify(res.data.details))) || 'Errore creazione';
+                $scope.ok = null;
+            });
         };
 
         $scope.del = function(task) {

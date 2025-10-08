@@ -1,0 +1,12 @@
+<configuration>
+    <property name="PATTERN" value="%d{HH:mm:ss.SSS} %5p [%thread] %logger{36} - %msg%n"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern>${PATTERN}</pattern></encoder>
+    </appender>
+
+    <logger name="com.example.taskapp" level="DEBUG"/>
+    <logger name="org.hibernate.SQL" level="DEBUG"/>
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE"/>
+
+    <root level="INFO"><appender-ref ref="STDOUT"/></root>
+</configuration>

@@ -1,13 +1,15 @@
 package com.example.taskapp.web;
 
-import com.example.taskapp.domain.Task;
-import com.example.taskapp.repo.TaskRepository;
+import com.example.taskapp.service.TaskService;
+import com.example.taskapp.web.dto.TaskRequest;
+import com.example.taskapp.web.dto.TaskResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,24 +18,32 @@ import java.util.List;
 @Slf4j
 public class TaskController {
 
-    private final TaskRepository repo;
+    private final TaskService service;
 
     @GetMapping
-    public List<Task> findAll() {
-        log.info("GET /api/tasks");
-        return repo.findAll();
+    public List<TaskResponse> findAll() {
+        return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public TaskResponse findById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Task create(@Valid @RequestBody Task t) {
-        log.info("POST /api/tasks -> {}", t.getTitle());
-        return repo.save(t);
+    public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskRequest req) {
+        TaskResponse created = service.create(req);
+        return ResponseEntity.created(URI.create("/api/tasks/" + created.getId())).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public TaskResponse update(@PathVariable Long id, @Valid @RequestBody TaskRequest req) {
+        return service.update(id, req);
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        repo.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
