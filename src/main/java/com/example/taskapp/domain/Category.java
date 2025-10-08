@@ -5,21 +5,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
-@Table(indexes = {
-        @Index(name = "idx_task_category_id", columnList = "category_id")
-})
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Task {
+public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Column(nullable = false)
-    private String title;
+    @Column(nullable = false, unique = true)
+    private String name;
 
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

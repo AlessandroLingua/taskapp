@@ -8,4 +8,5 @@ public class TaskRequest {
     @NotBlank(message = "title è obbligatorio")
     private String title;
     private String description;
+    private Long categoryId; // opzionale
 }
