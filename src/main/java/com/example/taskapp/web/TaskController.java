@@ -1,11 +1,13 @@
 package com.example.taskapp.web;
 
 import com.example.taskapp.service.TaskService;
+import com.example.taskapp.web.dto.PagedResponse;
 import com.example.taskapp.web.dto.TaskRequest;
 import com.example.taskapp.web.dto.TaskResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,15 @@ public class TaskController {
     @GetMapping
     public List<TaskResponse> findAll() {
         return service.findAll();
+    }
+
+    // NUOVO: paginazione + filtro
+    @GetMapping("/paged")
+    public PagedResponse<TaskResponse> findAllPaged(
+            Pageable pageable,
+            @RequestParam(required = false) String q,
+            @RequestParam(required = false) Long categoryId) {
+        return service.findAll(pageable, q, categoryId);
     }
 
     @GetMapping("/{id}")
